@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
-using Microsoft.Framework.TestAdapter;
 using Xunit.Abstractions;
 using VsTestCase = Microsoft.Framework.TestAdapter.Test;
 
-namespace Xunit.ConsoleClient
+namespace Xunit.Runner.AspNet
 {
     public static class DesignTimeTestConverter
     {
@@ -54,13 +53,9 @@ namespace Xunit.ConsoleClient
             var classFullName = tc.TestMethod.TestClass.Class.Name;
             var dotIndex = classFullName.LastIndexOf('.');
             if (dotIndex >= 0)
-            {
                 shortName.Append(classFullName.Substring(dotIndex + 1));
-            }
             else
-            {
                 shortName.Append(classFullName);
-            }
 
             shortName.Append(".");
             shortName.Append(tc.TestMethod.Method.Name);
@@ -74,13 +69,7 @@ namespace Xunit.ConsoleClient
                 shortName.Append(")");
             }
             else if (argumentsIndex >= 0)
-            {
                 shortName.Append(tc.DisplayName.Substring(argumentsIndex));
-            }
-            else
-            {
-                // No need to handle argments
-            }
 
             return shortName.ToString();
         }
@@ -93,13 +82,9 @@ namespace Xunit.ConsoleClient
         {
             string uniqueName;
             if (uniquifyNames)
-            {
                 uniqueName = string.Format("{0}({1})", fullyQualifiedName, testcase.UniqueID);
-            }
             else
-            {
                 uniqueName = fullyQualifiedName;
-            }
 
             var result = new VsTestCase();
             result.DisplayName = shortName;

@@ -3,13 +3,22 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Xunit;
-using Xunit.ConsoleClient;
+using Xunit.Runner.AspNet;
 using Xunit.Sdk;
 
 public class CommandLineTests
 {
     public class Filename
     {
+        [Fact]
+        public static void MissingAssemblyFileNameThrows()
+        {
+            var exception = Record.Exception(() => CommandLine.Parse(new[] { "-teamcity" }));
+
+            Assert.IsType<ArgumentException>(exception);
+            Assert.Equal("must specify at least one assembly", exception.Message);
+        }
+
         [Fact]
         public static void MultipleAssembliesDoesNotThrow()
         {
@@ -37,11 +46,11 @@ public class CommandLineTests
     public class MaxThreadsOption
     {
         [Fact]
-        public static void DefaultValueIsZero()
+        public static void DefaultValueIsNull()
         {
             var commandLine = TestableCommandLine.Parse("assemblyName.dll");
 
-            Assert.Equal(0, commandLine.MaxParallelThreads);
+            Assert.Null(commandLine.MaxParallelThreads);
         }
 
         [Fact]
@@ -509,11 +518,12 @@ public class CommandLineTests
     public class ParallelizationOptions
     {
         [Fact]
-        public static void ParallelIsCollectionsOnlyByDefault()
+        public static void ParallelizationOptionsAreNullByDefault()
         {
             var project = TestableCommandLine.Parse("assemblyName.dll");
 
-            Assert.True(project.ParallelizeTestCollections);
+            Assert.Null(project.ParallelizeAssemblies);
+            Assert.Null(project.ParallelizeTestCollections);
         }
 
         [Fact]
@@ -527,13 +537,15 @@ public class CommandLineTests
         }
 
         [Theory]
-        [InlineData("none", false)]
-        [InlineData("collections", true)]
-        [InlineData("all", true)]
-        public static void ParallelCanBeTurnedOn(string parallelOption, bool expectedCollectionsParallelization)
+        [InlineData("none", false, false)]
+        [InlineData("assemblies", true, false)]
+        [InlineData("collections", false, true)]
+        [InlineData("all", true, true)]
+        public static void ParallelCanBeTurnedOn(string parallelOption, bool expectedAssemblyParallelization, bool expectedCollectionsParallelization)
         {
             var project = TestableCommandLine.Parse("assemblyName.dll", "-parallel", parallelOption);
 
+            Assert.Equal(expectedAssemblyParallelization, project.ParallelizeAssemblies);
             Assert.Equal(expectedCollectionsParallelization, project.ParallelizeTestCollections);
         }
     }
@@ -563,7 +575,7 @@ public class CommandLineTests
             Assert.Equal("foo.xml", output.Value);
         }
     }
- 
+
     public class DesignTimeSwitch
     {
         [Theory]
@@ -623,7 +635,8 @@ public class CommandLineTests
     {
         private TestableCommandLine(params string[] arguments)
             : base(arguments)
-        { }
+        {
+        }
 
         public new static TestableCommandLine Parse(params string[] arguments)
         {

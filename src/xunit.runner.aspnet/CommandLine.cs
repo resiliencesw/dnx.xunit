@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Xunit.ConsoleClient
+namespace Xunit.Runner.AspNet
 {
     public class CommandLine
     {
@@ -14,7 +14,6 @@ namespace Xunit.ConsoleClient
                 arguments.Push(args[i]);
 
             TeamCity = Environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null;
-            ParallelizeTestCollections = true;
             DesignTimeTestUniqueNames = new List<string>();
             Project = Parse();
         }
@@ -26,11 +25,13 @@ namespace Xunit.ConsoleClient
 
         public bool List { get; set; }
 
-        public int MaxParallelThreads { get; set; }
+        public int? MaxParallelThreads { get; set; }
 
         public XunitProject Project { get; protected set; }
 
-        public bool ParallelizeTestCollections { get; set; }
+        public bool? ParallelizeAssemblies { get; set; }
+
+        public bool? ParallelizeTestCollections { get; set; }
 
         public bool TeamCity { get; protected set; }
 
@@ -72,7 +73,6 @@ namespace Xunit.ConsoleClient
                     break;
 
                 var assemblyFile = arguments.Pop();
-
                 string configFile = null;
 
                 assemblies.Add(Tuple.Create(assemblyFile, configFile));
@@ -119,12 +119,23 @@ namespace Xunit.ConsoleClient
                     switch (parallelismOption)
                     {
                         case ParallelismOption.all:
+                            ParallelizeAssemblies = true;
+                            ParallelizeTestCollections = true;
+                            break;
+
+                        case ParallelismOption.assemblies:
+                            ParallelizeAssemblies = true;
+                            ParallelizeTestCollections = false;
+                            break;
+
                         case ParallelismOption.collections:
+                            ParallelizeAssemblies = false;
                             ParallelizeTestCollections = true;
                             break;
 
                         case ParallelismOption.none:
                         default:
+                            ParallelizeAssemblies = false;
                             ParallelizeTestCollections = false;
                             break;
                     }
@@ -183,9 +194,7 @@ namespace Xunit.ConsoleClient
                 else if (optionName == "-test" || optionName == "--test")
                 {
                     if (option.Value == null)
-                    {
                         throw new ArgumentException("missing argument for --test");
-                    }
 
                     DesignTimeTestUniqueNames.Add(option.Value);
                 }

@@ -1,6 +1,6 @@
-## <a href="https://github.com/xunit/xunit"><img src="https://raw.github.com/xunit/media/master/full-logo.png" title="xUnit.net KRE Runner" /></a>
+## <a href="https://github.com/xunit/xunit"><img src="https://raw.github.com/xunit/media/master/full-logo.png" title="xUnit.net ASP.NET v5+ Runner" /></a>
 
-This runner enables [xUnit.net](https://github.com/xunit/xunit) test to run on the [K Runtime Environment](https://github.com/aspnet/KRuntime).
+This runner supports [xUnit.net](https://github.com/xunit/xunit) tests for [ASP.NET v5+](https://github.com/aspnet).
 
 ### Usage
 
@@ -10,10 +10,10 @@ To install this package, add the following to your project.json
 {
     "dependencies": {
         "xunit": "2.0.0-*",
-        "xunit.runner.kre": "1.0.0-*"
+        "xunit.runner.aspnet": "1.0.0-*"
     },
     "commands": {
-        "test": "xunit.runner.kre"
+        "test": "xunit.runner.aspnet"
     }
 }
 ```

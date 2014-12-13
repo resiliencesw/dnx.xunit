@@ -1,14 +1,10 @@
-﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Framework.TestAdapter;
 using Xunit.Abstractions;
 using VsTestCase = Microsoft.Framework.TestAdapter.Test;
 
-
-namespace Xunit.ConsoleClient
+namespace Xunit.Runner.AspNet
 {
     public class DesignTimeExecutionVisitor : TestMessageVisitor<ITestAssemblyFinished>
     {
@@ -31,9 +27,7 @@ namespace Xunit.ConsoleClient
             var test = _conversions[testStarting.TestCase];
 
             if (_sink != null)
-            {
                 _sink.RecordStart(test);
-            }
 
             return true;
         }
@@ -43,12 +37,7 @@ namespace Xunit.ConsoleClient
             var test = _conversions[testSkipped.TestCase];
 
             if (_sink != null)
-            {
-                _sink.RecordResult(new TestResult(test)
-                {
-                    Outcome = TestOutcome.Skipped,
-                });
-            }
+                _sink.RecordResult(new TestResult(test) { Outcome = TestOutcome.Skipped });
 
             return true;
         }
@@ -59,7 +48,6 @@ namespace Xunit.ConsoleClient
             var result = new TestResult(test)
             {
                 Outcome = TestOutcome.Failed,
-
                 Duration = TimeSpan.FromSeconds((double)testFailed.ExecutionTime),
                 ErrorMessage = string.Join(Environment.NewLine, testFailed.Messages),
                 ErrorStackTrace = string.Join(Environment.NewLine, testFailed.StackTraces),
@@ -68,9 +56,7 @@ namespace Xunit.ConsoleClient
             result.Messages.Add(testFailed.Output);
 
             if (_sink != null)
-            {
                 _sink.RecordResult(result);
-            }
 
             return true;
         }
@@ -84,7 +70,6 @@ namespace Xunit.ConsoleClient
                 _sink.RecordResult(new TestResult(test)
                 {
                     Outcome = TestOutcome.Passed,
-
                     Duration = TimeSpan.FromSeconds((double)testPassed.ExecutionTime),
                 });
             }

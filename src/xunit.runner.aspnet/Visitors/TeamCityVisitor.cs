@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Xml.Linq;
 using Xunit.Abstractions;
 
-namespace Xunit.ConsoleClient
+namespace Xunit.Runner.AspNet
 {
     public class TeamCityVisitor : XmlTestExecutionVisitor
     {

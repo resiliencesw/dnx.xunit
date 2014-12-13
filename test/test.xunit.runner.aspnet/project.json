@@ -10,9 +10,9 @@
     },
     "dependencies": {
         "xunit": "2.0.0-*",
-        "xunit.runner.kre": ""
+        "xunit.runner.aspnet": ""
     },
     "commands": {
-        "test": "xunit.runner.kre"
+        "test": "xunit.runner.aspnet"
     }
 }
