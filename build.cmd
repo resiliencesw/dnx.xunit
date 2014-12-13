@@ -1,4 +1,7 @@
 @echo off
+rem CLR team incompetence override
+rmdir /q /s %USERPROFILE%\.kpm\packages
+
 cd %~dp0
 
 SETLOCAL
