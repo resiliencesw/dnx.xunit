@@ -1,0 +1,19 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+
+  <PropertyGroup>
+    <SolutionDir>$(MSBuildProjectDirectory)\..\</SolutionDir>
+    <NuGetExePath Condition=" '$(NuGetExePath)' == '' ">$(SolutionDir).nuget\nuget.exe</NuGetExePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <NupkgFiles Include="$(SolutionDir)artifacts\build\*.nupkg" Exclude="$(SolutionDir)artifacts\build\*.symbols*.nupkg" />
+  </ItemGroup>
+
+  <Target Name="PushMyGet">
+    <Exec Command='"$(NuGetExePath)" push %(NupkgFiles.Identity) -NonInteractive -Source https://www.myget.org/F/xunit/api/v2/package' />
+  </Target>
+
+  <Target Name="PushNuGet">
+    <Exec Command='"$(NuGetExePath)" push %(NupkgFiles.Identity) -NonInteractive' />
+  </Target>
+
+</Project>

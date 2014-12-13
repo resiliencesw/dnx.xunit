@@ -1,7 +1,7 @@
 
-var VERSION='0.1'
-var FULL_VERSION='0.1'
-var AUTHORS='Microsoft Open Technologies, Inc.'
+var VERSION='2.0.0-beta5'
+var FULL_VERSION='2.0.0-beta5'
+var AUTHORS='Outercurve Foundation'
 
 use-standard-lifecycle
 k-standard-goals
