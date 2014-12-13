@@ -4,13 +4,25 @@ This runner supports [xUnit.net](https://github.com/xunit/xunit) tests for [ASP.
 
 ### Usage
 
-To install this package, add the following to your project.json
+To install this package, ensure your project.json contains the following lines:
 
 ```JSON
 {
     "dependencies": {
         "xunit": "2.0.0-*",
-        "xunit.runner.aspnet": "1.0.0-*"
+        "xunit.runner.aspnet": "2.0.0-*"
+    },
+    "frameworks": {
+        "aspnet50": {
+            "frameworkAssemblies": {
+                "System.Runtime": ""
+            }
+        },
+        "aspnetcore50": {
+            "dependencies": {
+                "System.Runtime": "4.0.20-beta-22231"
+            }
+        }
     },
     "commands": {
         "test": "xunit.runner.aspnet"
