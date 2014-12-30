@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.Framework.Runtime;
 using Microsoft.Framework.TestAdapter;
 using Xunit.Abstractions;
 using VsTestCase = Microsoft.Framework.TestAdapter.Test;
-using System.Threading.Tasks;
 
 namespace Xunit.Runner.AspNet
 {
@@ -272,21 +272,21 @@ namespace Xunit.Runner.AspNet
 
             try
             {
-                var discoveryOptions = new XunitDiscoveryOptions(assembly.Configuration);
-                var executionOptions = new XunitExecutionOptions(assembly.Configuration);
+                var discoveryOptions = TestFrameworkOptions.ForDiscovery(assembly.Configuration);
+                var executionOptions = TestFrameworkOptions.ForExecution(assembly.Configuration);
                 if (maxThreadCount.HasValue)
-                    executionOptions.MaxParallelThreads = maxThreadCount.GetValueOrDefault();
+                    executionOptions.SetMaxParallelThreads(maxThreadCount.GetValueOrDefault());
                 if (parallelizeTestCollections.HasValue)
-                    executionOptions.DisableParallelization = !parallelizeTestCollections.GetValueOrDefault();
+                    executionOptions.SetDisableParallelization(!parallelizeTestCollections.GetValueOrDefault());
 
                 lock (consoleLock)
                 {
                     if (assembly.Configuration.DiagnosticMessages)
                         Console.WriteLine("Discovering: {0} (method display = {1}, parallel test collections = {2}, max threads = {3})",
                                           Path.GetFileNameWithoutExtension(assembly.AssemblyFilename),
-                                          discoveryOptions.MethodDisplay,
-                                          !executionOptions.DisableParallelization,
-                                          executionOptions.MaxParallelThreads);
+                                          discoveryOptions.GetMethodDisplay(),
+                                          !executionOptions.GetDisableParallelization(),
+                                          executionOptions.GetMaxParallelThreads());
                     else
                         Console.WriteLine("Discovering: {0}", Path.GetFileNameWithoutExtension(assembly.AssemblyFilename));
                 }
