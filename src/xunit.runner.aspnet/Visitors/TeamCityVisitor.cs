@@ -11,7 +11,8 @@ namespace Xunit.Runner.AspNet
         readonly Func<string, string> flowIdMapper;
 
         public TeamCityVisitor(XElement assembliesElement, Func<bool> cancelThunk)
-            : this(assembliesElement, cancelThunk, _ => Guid.NewGuid().ToString("N")) { }
+            : this(assembliesElement, cancelThunk, _ => Guid.NewGuid().ToString("N"))
+        { }
 
         public TeamCityVisitor(XElement assembliesElement, Func<bool> cancelThunk, Func<string, string> flowIdMapper)
             : base(assembliesElement, cancelThunk)

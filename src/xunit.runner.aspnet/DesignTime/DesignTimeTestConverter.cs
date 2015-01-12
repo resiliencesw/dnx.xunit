@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Security.Cryptography;
+using System.Text;
 using Xunit.Abstractions;
 using VsTestCase = Microsoft.Framework.TestAdapter.Test;
 
@@ -34,11 +34,11 @@ namespace Xunit.Runner.AspNet
                 foreach (var testcase in group)
                 {
                     results.Add(
-                        testcase.testcase, 
+                        testcase.testcase,
                         Convert(
                             testcase.testcase,
                             testcase.shortName,
-                            testcase.fullyQualifiedName, 
+                            testcase.fullyQualifiedName,
                             uniquifyNames));
                 }
             }

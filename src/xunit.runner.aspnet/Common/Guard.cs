@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 
 /// <summary>
 /// Guard class, used for guard clauses and argument validation
