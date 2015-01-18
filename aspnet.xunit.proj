@@ -46,7 +46,7 @@
 
   <Target Name='ZipArtifacts'>
     <ItemGroup>
-      <Binaries Include="*.nupkg" />
+      <Binaries Include="src\**\*.nupkg" />
     </ItemGroup>
 
     <Delete Files="binaries.zip" />
@@ -55,7 +55,7 @@
 
   <Target Name="PushMyGet">
     <ItemGroup>
-      <NupkgFiles Include="*.nupkg" />
+      <NupkgFiles Include="src\**\*.nupkg" Exclude="src\**\*.symbols.nupkg" />
     </ItemGroup>
     <Exec Command=".nuget\NuGet.exe push %(NupkgFiles.Identity) -NonInteractive -Source https://www.myget.org/F/xunit/api/v2/package" />
   </Target>
