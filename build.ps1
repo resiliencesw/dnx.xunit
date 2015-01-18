@@ -1,23 +1,30 @@
-# Have to bust the cache, because of broken packages from the CLR team
-remove-item -recurse -force $(join-path $env:USERPROFILE ".kpm\packages") -ErrorAction SilentlyContinue
+param(
+    [string]$target = "Test",
+    [string]$verbosity = "minimal",
+    [int]$maxCpuCount = 0
+)
 
-# Make sure beta 2 is installed and in use
-& tools\kvm install 1.0.0-beta2 -runtime CLR -x86
-& tools\kvm install 1.0.0-beta2 -runtime CoreCLR -x86
-& tools\kvm use 1.0.0-beta2 -runtime CLR -x86
+# Kill all MSBUILD.EXE processes because they could very likely have a lock against our
+# MSBuild runner from when we last ran unit tests.
+get-process -name "msbuild" -ea SilentlyContinue | %{ stop-process $_.ID -force }
 
-# Update build number during CI
-if ($env:BuildSemanticVersion -ne $null) {
-  $content = get-content src\xunit.runner.aspnet\project.json
-  $content = $content.Replace("99.99.99", $env:BuildSemanticVersion)
-  set-content src\xunit.runner.aspnet\project.json $content -encoding UTF8
+$msbuilds = @(get-command msbuild -ea SilentlyContinue)
+if ($msbuilds.Count -eq 0) {
+    throw "MSBuild could not be found in the path. Please ensure MSBuild v12 (from Visual Studio 2013) is in the path."
 }
 
-# Restore packages and build
-& kpm restore
-& kpm build src\xunit.runner.aspnet --configuration Release
+$msbuild = $msbuilds[0].Definition
 
-# Run tests
-push-location test\test.xunit.runner.aspnet
-& k test
-pop-location
+if ($maxCpuCount -lt 1) {
+    $maxCpuCountText = $Env:MSBuildProcessorCount
+} else {
+    $maxCpuCountText = ":$maxCpuCount"
+}
+
+$solutionNameArg = "/property:SolutionName=xunit.vs2013.sln"
+if($noXamarin) {
+    $solutionNameArg = "/property:SolutionName=xunit.vs2013.NoXamarin.sln"
+}
+
+$allArgs = @("aspnet.xunit.proj", "/m$maxCpuCountText", "/nologo", "/verbosity:$verbosity", "/t:$target", $args)
+& $msbuild $allArgs
