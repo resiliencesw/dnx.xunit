@@ -10,3 +10,4 @@ if ($env:BuildSemanticVersion -ne $null) {
 }
 
 & kpm build src\xunit.runner.aspnet --configuration Release
+pushd test\test.xunit.runner.aspnet; & k test; popd
