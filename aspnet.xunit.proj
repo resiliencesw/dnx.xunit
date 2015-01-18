@@ -20,7 +20,7 @@
 
   <!-- Build server targets -->
 
-  <Target Name="CI" DependsOnTargets="PackageRestore;SetVersionNumber;Build;ZipArtifacts" />
+  <Target Name="CI" DependsOnTargets="PackageRestore;SetVersionNumber;Test;ZipArtifacts" />
   <Target Name="TeamCity" DependsOnTargets="CI;PushMyGet" />
 
   <Target Name="PackageRestore" DependsOnTargets="_DownloadNuGet">
