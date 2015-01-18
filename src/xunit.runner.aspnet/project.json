@@ -1,5 +1,5 @@
-{
-    "version": "2.0.0-beta5-*",
+﻿{
+    "version": "99.99.99",
     "frameworks": {
         "aspnet50": {
             "frameworkAssemblies": {
@@ -15,25 +15,25 @@
         },
         "aspnetcore50": {
             "dependencies": {
-                "System.Collections": "4.0.10-beta-22231",
-                "System.Collections.Concurrent": "4.0.0-beta-22231",
-                "System.Console": "4.0.0-beta-22231",
-                "System.Diagnostics.Debug": "4.0.10-beta-22231",
-                "System.Diagnostics.Tools": "4.0.0-beta-22231",
-                "System.Globalization": "4.0.10-beta-22231",
-                "System.IO.FileSystem": "4.0.0-beta-22231",
-                "System.Linq": "4.0.0-beta-22231",
-                "System.Reflection": "4.0.10-beta-22231",
-                "System.Reflection.Extensions": "4.0.0-beta-22231",
-                "System.Runtime.Extensions": "4.0.10-beta-22231",
-                "System.Security.Cryptography.Hashing": "4.0.0-beta-22231",
-                "System.Security.Cryptography.Hashing.Algorithms": "4.0.0-beta-22231",
-                "System.Text.RegularExpressions": "4.0.0-beta-22231",
-                "System.Threading": "4.0.0-beta-22231",
-                "System.Threading.ExecutionContext": "4.0.0-beta-22231",
-                "System.Threading.Thread": "4.0.0-beta-22231",
-                "System.Threading.ThreadPool": "4.0.10-beta-22231",
-                "System.Xml.XDocument": "4.0.0-beta-22231"
+                "System.Collections": "4.0.10-beta-22416",
+                "System.Collections.Concurrent": "4.0.0-beta-22416",
+                "System.Console": "4.0.0-beta-22416",
+                "System.Diagnostics.Debug": "4.0.10-beta-22416",
+                "System.Diagnostics.Tools": "4.0.0-beta-22416",
+                "System.Globalization": "4.0.10-beta-22416",
+                "System.IO.FileSystem": "4.0.0-beta-22416",
+                "System.Linq": "4.0.0-beta-22416",
+                "System.Reflection": "4.0.10-beta-22416",
+                "System.Reflection.Extensions": "4.0.0-beta-22416",
+                "System.Runtime.Extensions": "4.0.10-beta-22416",
+                "System.Security.Cryptography.Hashing": "4.0.0-beta-22416",
+                "System.Security.Cryptography.Hashing.Algorithms": "4.0.0-beta-22416",
+                "System.Text.RegularExpressions": "4.0.0-beta-22416",
+                "System.Threading": "4.0.0-beta-22416",
+                "System.Threading.ExecutionContext": "4.0.0-beta-22416",
+                "System.Threading.Thread": "4.0.0-beta-22416",
+                "System.Threading.ThreadPool": "4.0.10-beta-22416",
+                "System.Xml.XDocument": "4.0.0-beta-22416"
             }
         }
     },

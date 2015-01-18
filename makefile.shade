@@ -1,7 +1,0 @@
-
-var VERSION='2.0.0-beta5'
-var FULL_VERSION='2.0.0-beta5'
-var AUTHORS='Outercurve Foundation'
-
-use-standard-lifecycle
-k-standard-goals
