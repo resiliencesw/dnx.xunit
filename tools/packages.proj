@@ -8,7 +8,7 @@
     <NupkgFiles Include="$(SolutionDir)src\xunit.runner.aspnet\bin\Release\*.nupkg" Exclude="$(SolutionDir)src\xunit.runner.aspnet\bin\Release\*.symbols*.nupkg" />
   </ItemGroup>
 
-  <Target Name="PushMyGet" DependsOnTargets="_DownloadNuGet">
+  <Target Name="PushMyGet" DependsOnTargets="_DownloadNuGet" Condition=" '$(GitBranch)' == 'master' Or '$(GitBranch)' == 'refs/heads/master' ">
     <Exec Command='"$(NuGetExePath)" push %(NupkgFiles.Identity) -NonInteractive -Source https://www.myget.org/F/xunit/api/v2/package' />
   </Target>
 
