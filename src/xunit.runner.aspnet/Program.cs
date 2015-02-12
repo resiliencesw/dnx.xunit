@@ -46,7 +46,7 @@ namespace Xunit.Runner.AspNet
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Gray;
 
-                if (args.Length == 0 || args[0] == "-?")
+                if (args.Length == 0 || args.Any(arg => arg == "-?"))
                 {
                     PrintUsage();
                     return 1;
