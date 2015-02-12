@@ -27,11 +27,15 @@ namespace Xunit.Runner.AspNet
 
         public int? MaxParallelThreads { get; set; }
 
+        public bool NoLogo { get; set; }
+
         public XunitProject Project { get; protected set; }
 
         public bool? ParallelizeAssemblies { get; set; }
 
         public bool? ParallelizeTestCollections { get; set; }
+
+        public bool Quiet { get; set; }
 
         public bool TeamCity { get; protected set; }
 
@@ -91,7 +95,17 @@ namespace Xunit.Runner.AspNet
                 if (!optionName.StartsWith("-"))
                     throw new ArgumentException(String.Format("unknown command line option: {0}", option.Key));
 
-                if (optionName == "-wait")
+                if (optionName == "-quiet")
+                {
+                    GuardNoOptionValue(option);
+                    Quiet = true;
+                }
+                else if (optionName == "-nologo")
+                {
+                    GuardNoOptionValue(option);
+                    NoLogo = true;
+                }
+                else if (optionName == "-wait")
                 {
                     GuardNoOptionValue(option);
                     Wait = true;

@@ -39,15 +39,9 @@ namespace Xunit.Runner.AspNet
 
             try
             {
-                var framework = _appEnv.RuntimeFramework;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("xUnit.net ASP.NET test runner ({0}-bit {1} {2})", IntPtr.Size * 8, framework.Identifier, framework.Version);
-                Console.WriteLine("Copyright (C) 2015 Outercurve Foundation.");
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Gray;
-
                 if (args.Length == 0 || args.Any(arg => arg == "-?"))
                 {
+                    PrintHeader();
                     PrintUsage();
                     return 1;
                 }
@@ -71,7 +65,10 @@ namespace Xunit.Runner.AspNet
 
                 var commandLine = CommandLine.Parse(args);
 
-                var failCount = RunProject(defaultDirectory, commandLine.Project, commandLine.TeamCity,
+                if (!commandLine.NoLogo)
+                    PrintHeader();
+
+                var failCount = RunProject(defaultDirectory, commandLine.Project, commandLine.Quiet, commandLine.TeamCity,
                                            commandLine.ParallelizeAssemblies, commandLine.ParallelizeTestCollections,
                                            commandLine.MaxParallelThreads,
                                            commandLine.DesignTime, commandLine.List, commandLine.DesignTimeTestUniqueNames);
@@ -118,6 +115,16 @@ namespace Xunit.Runner.AspNet
         }
 #endif
 
+        void PrintHeader()
+        {
+            var framework = _appEnv.RuntimeFramework;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("xUnit.net ASP.NET test runner ({0}-bit {1} {2})", IntPtr.Size * 8, framework.Identifier, framework.Version);
+            Console.WriteLine("Copyright (C) 2015 Outercurve Foundation.");
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
         static void PrintUsage()
         {
             Console.WriteLine("usage: xunit.runner.aspnet <assemblyFile> [assemblyFile...] [options]");
@@ -151,7 +158,7 @@ namespace Xunit.Runner.AspNet
                                   transform.Description);
         }
 
-        int RunProject(string defaultDirectory, XunitProject project, bool teamcity, bool? parallelizeAssemblies, bool? parallelizeTestCollections, int? maxThreadCount, bool designTime, bool list, IReadOnlyList<string> designTimeFullyQualifiedNames)
+        int RunProject(string defaultDirectory, XunitProject project, bool quiet, bool teamcity, bool? parallelizeAssemblies, bool? parallelizeTestCollections, int? maxThreadCount, bool designTime, bool list, IReadOnlyList<string> designTimeFullyQualifiedNames)
         {
             XElement assembliesElement = null;
             var xmlTransformers = TransformFactory.GetXmlTransformers(project);
@@ -172,7 +179,7 @@ namespace Xunit.Runner.AspNet
 
                 if (parallelizeAssemblies.GetValueOrDefault())
                 {
-                    var tasks = project.Assemblies.Select(assembly => Task.Run(() => ExecuteAssembly(consoleLock, defaultDirectory, assembly, needsXml, teamcity, parallelizeTestCollections, maxThreadCount, project.Filters, designTime, list, designTimeFullyQualifiedNames)));
+                    var tasks = project.Assemblies.Select(assembly => Task.Run(() => ExecuteAssembly(consoleLock, defaultDirectory, assembly, quiet, needsXml, teamcity, parallelizeTestCollections, maxThreadCount, project.Filters, designTime, list, designTimeFullyQualifiedNames)));
                     var results = Task.WhenAll(tasks).GetAwaiter().GetResult();
                     foreach (var assemblyElement in results.Where(result => result != null))
                         assembliesElement.Add(assemblyElement);
@@ -181,7 +188,7 @@ namespace Xunit.Runner.AspNet
                 {
                     foreach (var assembly in project.Assemblies)
                     {
-                        var assemblyElement = ExecuteAssembly(consoleLock, defaultDirectory, assembly, needsXml, teamcity, parallelizeTestCollections, maxThreadCount, project.Filters, designTime, list, designTimeFullyQualifiedNames);
+                        var assemblyElement = ExecuteAssembly(consoleLock, defaultDirectory, assembly, quiet, needsXml, teamcity, parallelizeTestCollections, maxThreadCount, project.Filters, designTime, list, designTimeFullyQualifiedNames);
                         if (assemblyElement != null)
                             assembliesElement.Add(assemblyElement);
                     }
@@ -191,10 +198,13 @@ namespace Xunit.Runner.AspNet
 
                 if (completionMessages.Count > 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine();
-                    Console.WriteLine("=== TEST EXECUTION SUMMARY ===");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    if (!quiet)
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine();
+                        Console.WriteLine("=== TEST EXECUTION SUMMARY ===");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
 
                     var totalTestsRun = completionMessages.Values.Sum(summary => summary.Total);
                     var totalTestsFailed = completionMessages.Values.Sum(summary => summary.Failed);
@@ -245,17 +255,18 @@ namespace Xunit.Runner.AspNet
             return failed ? 1 : completionMessages.Values.Sum(summary => summary.Failed);
         }
 
-        TestMessageVisitor<ITestAssemblyFinished> CreateVisitor(object consoleLock, string defaultDirectory, XElement assemblyElement, bool teamCity)
+        TestMessageVisitor<ITestAssemblyFinished> CreateVisitor(object consoleLock, bool quiet, string defaultDirectory, XElement assemblyElement, bool teamCity)
         {
             if (teamCity)
                 return new TeamCityVisitor(assemblyElement, () => cancel);
 
-            return new StandardOutputVisitor(consoleLock, defaultDirectory, assemblyElement, () => cancel, completionMessages);
+            return new StandardOutputVisitor(consoleLock, quiet, defaultDirectory, assemblyElement, () => cancel, completionMessages);
         }
 
         XElement ExecuteAssembly(object consoleLock,
                                  string defaultDirectory,
                                  XunitProjectAssembly assembly,
+                                 bool quiet,
                                  bool needsXml,
                                  bool teamCity,
                                  bool? parallelizeTestCollections,
@@ -287,7 +298,7 @@ namespace Xunit.Runner.AspNet
                                           discoveryOptions.GetMethodDisplayOrDefault(),
                                           !executionOptions.GetDisableParallelizationOrDefault(),
                                           executionOptions.GetMaxParallelThreadsOrDefault());
-                    else
+                    else if (!quiet)
                         Console.WriteLine("Discovering: {0}", Path.GetFileNameWithoutExtension(assembly.AssemblyFilename));
                 }
 
@@ -301,8 +312,9 @@ namespace Xunit.Runner.AspNet
                     //if (designTime)
                     //    vsTestcases = DesignTimeTestConverter.Convert(discoveryVisitor.TestCases);
 
-                    lock (consoleLock)
-                        Console.WriteLine("Discovered:  {0}", Path.GetFileNameWithoutExtension(assembly.AssemblyFilename));
+                    if (!quiet)
+                        lock (consoleLock)
+                            Console.WriteLine("Discovered:  {0}", Path.GetFileNameWithoutExtension(assembly.AssemblyFilename));
 
                     if (listTestCases)
                     {
@@ -332,7 +344,7 @@ namespace Xunit.Runner.AspNet
                         return assemblyElement;
                     }
 
-                    var resultsVisitor = CreateVisitor(consoleLock, defaultDirectory, assemblyElement, teamCity);
+                    var resultsVisitor = CreateVisitor(consoleLock, quiet, defaultDirectory, assemblyElement, teamCity);
 
                     /*
                     if (designTime)
@@ -381,7 +393,7 @@ namespace Xunit.Runner.AspNet
                 while (e != null)
                 {
                     Console.WriteLine("{0}: {1}", e.GetType().FullName, e.Message);
-                failed = true;
+                    failed = true;
                     e = e.InnerException;
                 }
             }
