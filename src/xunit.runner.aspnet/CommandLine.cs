@@ -18,6 +18,8 @@ namespace Xunit.Runner.AspNet
             Project = Parse();
         }
 
+        public bool Debug { get; set; }
+
         public bool DesignTime { get; set; }
 
         // Used with --designtime - to specify specific tests by uniqueId.
@@ -104,6 +106,11 @@ namespace Xunit.Runner.AspNet
                 {
                     GuardNoOptionValue(option);
                     NoLogo = true;
+                }
+                else if (optionName == "-debug")
+                {
+                    GuardNoOptionValue(option);
+                    Debug = true;
                 }
                 else if (optionName == "-wait")
                 {

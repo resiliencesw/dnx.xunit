@@ -43,6 +43,29 @@ public class CommandLineTests
         }
     }
 
+    public class DebugOption
+    {
+        [Fact]
+        public static void DebugNotSetDebugIsFalse()
+        {
+            var arguments = new[] { "assemblyName.dll" };
+
+            var commandLine = TestableCommandLine.Parse(arguments);
+
+            Assert.False(commandLine.Debug);
+        }
+
+        [Fact]
+        public static void DebugSetDebugIsTrue()
+        {
+            var arguments = new[] { "assemblyName.dll", "-debug" };
+
+            var commandLine = TestableCommandLine.Parse(arguments);
+
+            Assert.True(commandLine.Debug);
+        }
+    }
+
     public class MaxThreadsOption
     {
         [Fact]

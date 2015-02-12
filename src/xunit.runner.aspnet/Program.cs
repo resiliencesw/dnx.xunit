@@ -65,6 +65,9 @@ namespace Xunit.Runner.AspNet
 
                 var commandLine = CommandLine.Parse(args);
 
+                if (commandLine.Debug)
+                    Debugger.Launch();
+
                 if (!commandLine.NoLogo)
                     PrintHeader();
 
