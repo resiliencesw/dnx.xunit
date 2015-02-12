@@ -65,8 +65,16 @@ namespace Xunit.Runner.AspNet
 
                 var commandLine = CommandLine.Parse(args);
 
+#if !ASPNETCORE50
                 if (commandLine.Debug)
                     Debugger.Launch();
+#else
+                if (commandLine.Debug)
+                {
+                    Console.WriteLine("Debug support is not available in .NET Core.");
+                    return -1;
+                }
+#endif
 
                 if (!commandLine.NoLogo)
                     PrintHeader();
@@ -146,7 +154,9 @@ namespace Xunit.Runner.AspNet
             Console.WriteLine("  -nologo                : do not show the copyright message");
             Console.WriteLine("  -quiet                 : do not show progress messages");
             Console.WriteLine("  -wait                  : wait for input after completion");
+#if !ASPNETCORE50
             Console.WriteLine("  -debug                 : launch the debugger to debug the tests");
+#endif
             Console.WriteLine("  -trait \"name=value\"    : only run tests with matching name/value traits");
             Console.WriteLine("                         : if specified more than once, acts as an OR operation");
             Console.WriteLine("  -notrait \"name=value\"  : do not run tests with matching name/value traits");
