@@ -376,8 +376,14 @@ namespace Xunit.Runner.AspNet
             }
             catch (Exception ex)
             {
-                Console.WriteLine("{0}: {1}", ex.GetType().FullName, ex.Message);
+                var e = ex;
+
+                while (e != null)
+                {
+                    Console.WriteLine("{0}: {1}", e.GetType().FullName, e.Message);
                 failed = true;
+                    e = e.InnerException;
+                }
             }
 
             return assemblyElement;
