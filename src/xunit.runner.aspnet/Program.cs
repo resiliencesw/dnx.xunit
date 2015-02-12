@@ -143,7 +143,10 @@ namespace Xunit.Runner.AspNet
             Console.WriteLine("                         :   >0 - limit task thread pool size to 'count'");
             Console.WriteLine("  -noshadow              : do not shadow copy assemblies");
             Console.WriteLine("  -teamcity              : forces TeamCity mode (normally auto-detected)");
+            Console.WriteLine("  -nologo                : do not show the copyright message");
+            Console.WriteLine("  -quiet                 : do not show progress messages");
             Console.WriteLine("  -wait                  : wait for input after completion");
+            Console.WriteLine("  -debug                 : launch the debugger to debug the tests");
             Console.WriteLine("  -trait \"name=value\"    : only run tests with matching name/value traits");
             Console.WriteLine("                         : if specified more than once, acts as an OR operation");
             Console.WriteLine("  -notrait \"name=value\"  : do not run tests with matching name/value traits");
