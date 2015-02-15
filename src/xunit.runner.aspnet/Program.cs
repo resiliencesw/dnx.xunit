@@ -306,19 +306,23 @@ namespace Xunit.Runner.AspNet
                 if (parallelizeTestCollections.HasValue)
                     executionOptions.SetDisableParallelization(!parallelizeTestCollections.GetValueOrDefault());
 
+                var assemblyDisplayName = Path.GetFileNameWithoutExtension(assembly.AssemblyFilename);
+
                 lock (consoleLock)
                 {
                     if (assembly.Configuration.DiagnosticMessagesOrDefault)
                         Console.WriteLine("Discovering: {0} (method display = {1}, parallel test collections = {2}, max threads = {3})",
-                                          Path.GetFileNameWithoutExtension(assembly.AssemblyFilename),
+                                          assemblyDisplayName,
                                           discoveryOptions.GetMethodDisplayOrDefault(),
                                           !executionOptions.GetDisableParallelizationOrDefault(),
                                           executionOptions.GetMaxParallelThreadsOrDefault());
                     else if (!quiet)
-                        Console.WriteLine("Discovering: {0}", Path.GetFileNameWithoutExtension(assembly.AssemblyFilename));
+                        Console.WriteLine("Discovering: {0}", assemblyDisplayName);
                 }
 
-                using (var controller = new XunitFrontController(assembly.AssemblyFilename, assembly.ConfigFilename, assembly.ShadowCopy))
+                var diagnosticMessageVisitor = new DiagnosticMessageVisitor(consoleLock, assemblyDisplayName, assembly.Configuration.DiagnosticMessagesOrDefault);
+
+                using (var controller = new XunitFrontController(assembly.AssemblyFilename, assembly.ConfigFilename, assembly.ShadowCopy, diagnosticMessageSink: diagnosticMessageVisitor))
                 using (var discoveryVisitor = new TestDiscoveryVisitor())
                 {
                     controller.Find(includeSourceInformation: false, messageSink: discoveryVisitor, discoveryOptions: discoveryOptions);
@@ -391,7 +395,7 @@ namespace Xunit.Runner.AspNet
                         lock (consoleLock)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("ERROR:       {0} has no tests to run", Path.GetFileNameWithoutExtension(assembly.AssemblyFilename));
+                            Console.WriteLine("ERROR:       {0} has no tests to run", assemblyDisplayName);
                             Console.ForegroundColor = ConsoleColor.Gray;
                         }
                     }
