@@ -9,7 +9,7 @@
         "aspnetcore50": { }
     },
     "dependencies": {
-        "xunit": "2.0.0-rc3-build2878",
+        "xunit": "2.0.0-rc3-build2880",
         "xunit.runner.aspnet": ""
     },
     "commands": {
