@@ -7,9 +7,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.Framework.Runtime;
-//using Microsoft.Framework.TestAdapter;
+using Microsoft.Framework.TestAdapter;
 using Xunit.Abstractions;
-//using VsTestCase = Microsoft.Framework.TestAdapter.Test;
+using VsTestCase = Microsoft.Framework.TestAdapter.Test;
 
 namespace Xunit.Runner.AspNet
 {
@@ -328,9 +328,9 @@ namespace Xunit.Runner.AspNet
                     controller.Find(includeSourceInformation: false, messageSink: discoveryVisitor, discoveryOptions: discoveryOptions);
                     discoveryVisitor.Finished.WaitOne();
 
-                    //IDictionary<ITestCase, VsTestCase> vsTestcases = null;
-                    //if (designTime)
-                    //    vsTestcases = DesignTimeTestConverter.Convert(discoveryVisitor.TestCases);
+                    IDictionary<ITestCase, VsTestCase> vsTestcases = null;
+                    if (designTime)
+                        vsTestcases = DesignTimeTestConverter.Convert(discoveryVisitor.TestCases);
 
                     if (!quiet)
                         lock (consoleLock)
@@ -340,7 +340,6 @@ namespace Xunit.Runner.AspNet
                     {
                         lock (consoleLock)
                         {
-                            /*
                             if (designTime)
                             {
                                 var sink = (ITestDiscoverySink)_services.GetService(typeof(ITestDiscoverySink));
@@ -354,7 +353,6 @@ namespace Xunit.Runner.AspNet
                                 }
                             }
                             else
-                            */
                             {
                                 foreach (var testcase in discoveryVisitor.TestCases)
                                     Console.WriteLine(testcase.DisplayName);
@@ -366,7 +364,6 @@ namespace Xunit.Runner.AspNet
 
                     var resultsVisitor = CreateVisitor(consoleLock, quiet, defaultDirectory, assemblyElement, teamCity);
 
-                    /*
                     if (designTime)
                     {
                         var sink = (ITestExecutionSink)_services.GetService(typeof(ITestExecutionSink));
@@ -375,20 +372,19 @@ namespace Xunit.Runner.AspNet
                             vsTestcases,
                             resultsVisitor);
                     }
-                    */
 
                     IList<ITestCase> filteredTestCases;
-                    //if (!designTime || designTimeFullyQualifiedNames.Count == 0)
+                    if (!designTime || designTimeFullyQualifiedNames.Count == 0)
                     {
                         filteredTestCases = discoveryVisitor.TestCases.Where(filters.Filter).ToList();
                     }
-                    //else
-                    //{
-                    //    filteredTestCases = (from t in vsTestcases
-                    //                         where designTimeFullyQualifiedNames.Contains(t.Value.FullyQualifiedName)
-                    //                         select t.Key)
-                    //                        .ToList();
-                    //}
+                    else
+                    {
+                        filteredTestCases = (from t in vsTestcases
+                                             where designTimeFullyQualifiedNames.Contains(t.Value.FullyQualifiedName)
+                                             select t.Key)
+                                            .ToList();
+                    }
 
                     if (filteredTestCases.Count == 0)
                     {

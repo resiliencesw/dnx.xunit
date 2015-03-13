@@ -1,5 +1,4 @@
-﻿/*
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Framework.TestAdapter;
 using Xunit.Abstractions;
@@ -86,4 +85,3 @@ namespace Xunit.Runner.AspNet
         }
     }
 }
-*/
