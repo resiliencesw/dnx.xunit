@@ -2,11 +2,25 @@
     "frameworks": {
         "aspnet50": {
             "frameworkAssemblies": {
-                "System.Reflection": "",
+                "System.Diagnostics.Debug": "",
+                "System.Globalization": "",
+                "System.Linq": "",
+                "System.Reflection.Extensions": "",
+                "System.Runtime.Extensions": "",
                 "System.Threading.Tasks": ""
             }
         },
-        "aspnetcore50": { }
+        "aspnetcore50": {
+            "dependencies": {
+                "System.Collections.Concurrent": "4.0.10-beta-22605",
+                "System.Diagnostics.Debug": "4.0.10-beta-22605",
+                "System.Globalization": "4.0.10-beta-22605",
+                "System.Reflection.Extensions": "4.0.0-beta-22605",
+                "System.Security.Cryptography.Hashing.Algorithms": "4.0.0-beta-22605",
+                "System.Threading.Thread": "4.0.0-beta-22605",
+                "System.Threading.ThreadPool": "4.0.10-beta-22605"
+            }
+        }
     },
     "dependencies": {
         "xunit": "2.0.0-rc3-build2880",

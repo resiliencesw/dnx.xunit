@@ -3,27 +3,33 @@
     "frameworks": {
         "aspnet50": {
             "frameworkAssemblies": {
+                "System.Collections": "",
+                "System.ObjectModel": "",
+                "System.Reflection": "",
                 "System.Runtime": "",
+                "System.Text.RegularExpressions": "",
+                "System.Xml": "",
                 "System.Xml.Linq": ""
             }
         },
         "aspnetcore50": {
             "dependencies": {
-                "System.Collections.Concurrent": "4.0.10-beta-22416",
-                "System.Console": "4.0.0-beta-22416",
-                "System.Diagnostics.Tools": "4.0.0-beta-22416",
-                "System.IO.FileSystem": "4.0.0-beta-22416",
-                "System.Linq": "4.0.0-beta-22416",
-                "System.Security.Cryptography.Hashing.Algorithms": "4.0.0-beta-22416",
-                "System.Text.RegularExpressions": "4.0.10-beta-22416",
-                "System.Threading": "4.0.0-beta-22416",
-                "System.Xml.XDocument": "4.0.0-beta-22416"
+                "System.Console": "4.0.0-beta-22605",
+                "System.Diagnostics.Tools": "4.0.0-beta-22605",
+                "System.IO.FileSystem": "4.0.0-beta-22605",
+                "System.Linq": "4.0.0-beta-22605",
+                "System.ObjectModel": "4.0.10-beta-22605",
+                "System.Reflection": "4.0.10-beta-22605",
+                "System.Runtime.Extensions": "4.0.10-beta-22605",
+                "System.Text.RegularExpressions": "4.0.10-beta-22605",
+                "System.Threading": "4.0.10-beta-22605",
+                "System.Xml.XDocument": "4.0.0-beta-22605"
             }
         }
     },
     "dependencies": {
-        "Microsoft.Framework.Runtime.Interfaces": "1.0.0-beta1",
-        "Microsoft.Framework.TestAdapter": "1.0.0-beta1",
+        "Microsoft.Framework.Runtime.Interfaces": "1.0.0-beta3",
+        "Microsoft.Framework.TestAdapter": "1.0.0-beta3",
         "xunit.runner.utility": "2.0.0-rc3-build2880"
     }
 }
