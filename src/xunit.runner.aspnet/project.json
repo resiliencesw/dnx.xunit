@@ -1,5 +1,15 @@
 ﻿{
-    "version": "99.99.99",
+    "authors": ["James Newkirk", "Brad Wilson"],
+    "title": "xUnit.net [Runner: ASP.NET]",
+    "description": "Console and Visual Studio runner for xUnit.net. Supported platforms: ASP.NET 5+",
+    "projectUrl": "https://github.com/xunit/aspnet.xunit",
+    "iconUrl": "https://raw.githubusercontent.com/xunit/media/master/logo-512-transparent.png",
+    "licenseUrl": "https://raw.githubusercontent.com/xunit/xunit/master/license.txt",
+    "requireLicenseAcceptance": false,
+    "version": "99.99.99-dev",
+    "compilationOptions": {
+        "warningsAsErrors": true
+    },
     "frameworks": {
         "aspnet50": {
             "frameworkAssemblies": {
@@ -14,6 +24,7 @@
         },
         "aspnetcore50": {
             "dependencies": {
+                "System.Collections.Concurrent": "4.0.10-beta-22605",
                 "System.Console": "4.0.0-beta-22605",
                 "System.Diagnostics.Tools": "4.0.0-beta-22605",
                 "System.IO.FileSystem": "4.0.0-beta-22605",
@@ -21,6 +32,7 @@
                 "System.ObjectModel": "4.0.10-beta-22605",
                 "System.Reflection": "4.0.10-beta-22605",
                 "System.Runtime.Extensions": "4.0.10-beta-22605",
+                "System.Security.Cryptography.Hashing.Algorithms": "4.0.0-beta-22605",
                 "System.Text.RegularExpressions": "4.0.10-beta-22605",
                 "System.Threading": "4.0.10-beta-22605",
                 "System.Xml.XDocument": "4.0.0-beta-22605"
@@ -30,6 +42,6 @@
     "dependencies": {
         "Microsoft.Framework.Runtime.Interfaces": "1.0.0-beta3",
         "Microsoft.Framework.TestAdapter": "1.0.0-beta3",
-        "xunit.runner.utility": "2.0.0-rc3-build2880"
+        "xunit.runner.utility": "2.1.0-beta1-build2940"
     }
 }
