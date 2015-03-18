@@ -14,4 +14,4 @@ if ($env:BuildSemanticVersion -ne $null) {
 
 # Restore packages and build
 & kpm restore
-& kpm build src\xunit.runner.aspnet --configuration Release
+& kpm pack src\xunit.runner.aspnet --configuration Release
