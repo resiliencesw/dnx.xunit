@@ -38,7 +38,7 @@
 
   <Target Name="SetVersionNumber">
     <RegexReplace
-        Pattern='99\.99\.99'
+        Pattern='99\.99\.99-dev'
         Replacement='$(BuildSemanticVersion)'
         Files='@(ProjectFiles)'
         Condition=" '$(BuildSemanticVersion)' != '' "/>
