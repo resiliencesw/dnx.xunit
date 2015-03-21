@@ -43,6 +43,6 @@
         "Microsoft.Framework.Runtime.Interfaces": "1.0.0-beta3",
         "Microsoft.Framework.TestAdapter": "1.0.0-beta3",
         "Microsoft.Framework.TestHost": "1.0.0-beta3",
-        "xunit.runner.utility": "2.1.0-beta1-build2940"
+        "xunit.runner.utility": "2.1.0-beta1-build2945"
     }
 }

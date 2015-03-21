@@ -22,7 +22,7 @@
         }
     },
     "dependencies": {
-        "xunit": "2.1.0-beta1-build2940",
+        "xunit": "2.1.0-beta1-build2945",
         "xunit.runner.aspnet": ""
     },
     "commands": {
