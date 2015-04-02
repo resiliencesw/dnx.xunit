@@ -21,7 +21,6 @@
   <!-- Build server targets -->
 
   <Target Name="CI" DependsOnTargets="PackageRestore;SetVersionNumber;Test;ZipArtifacts" />
-  <Target Name="TeamCity" DependsOnTargets="CI;PushMyGet" />
 
   <Target Name="PackageRestore" DependsOnTargets="_DownloadNuGet">
     <Message Text="Restoring NuGet packages..." Importance="High" />
@@ -51,20 +50,6 @@
 
     <Delete Files="binaries.zip" />
     <Zip Files="@(Binaries)" ZipFileName="binaries.zip" StripPath="true" />
-  </Target>
-
-  <Target Name="PushMyGet">
-    <ItemGroup>
-      <NupkgFiles Include="src\**\*.nupkg" Exclude="src\**\*.symbols.nupkg" />
-    </ItemGroup>
-    <Exec Command=".nuget\NuGet.exe push %(NupkgFiles.Identity) -NonInteractive -Source https://www.myget.org/F/xunit/api/v2/package" />
-  </Target>
-
-  <Target Name="PushNuGet">
-    <ItemGroup>
-      <NupkgFiles Include="*.nupkg" />
-    </ItemGroup>
-    <Exec Command=".nuget\NuGet.exe push %(NupkgFiles.Identity) -NonInteractive" />
   </Target>
 
   <Target Name="_DownloadNuGet">
