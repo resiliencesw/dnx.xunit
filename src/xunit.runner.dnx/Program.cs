@@ -71,7 +71,7 @@ namespace Xunit.Runner.Dnx
 #else
                 if (commandLine.Debug)
                 {
-                    Console.WriteLine("Debug support is not available in .NET Core.");
+                    Console.WriteLine("Debug support is not available in DNX Core.");
                     return -1;
                 }
 #endif
@@ -130,7 +130,7 @@ namespace Xunit.Runner.Dnx
         {
             var framework = _appEnv.RuntimeFramework;
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("xUnit.net ASP.NET test runner ({0}-bit {1} {2})", IntPtr.Size * 8, framework.Identifier, framework.Version);
+            Console.WriteLine("xUnit.net DNX test runner ({0}-bit {1} {2})", IntPtr.Size * 8, framework.Identifier, framework.Version);
             Console.WriteLine("Copyright (C) 2015 Outercurve Foundation.");
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -138,7 +138,7 @@ namespace Xunit.Runner.Dnx
 
         static void PrintUsage()
         {
-            Console.WriteLine("usage: xunit.runner.aspnet <assemblyFile> [assemblyFile...] [options]");
+            Console.WriteLine("usage: xunit.runner.dnx <assemblyFile> [assemblyFile...] [options]");
             Console.WriteLine();
             Console.WriteLine("Valid options:");
             Console.WriteLine("  -parallel option       : set parallelization based on option");
