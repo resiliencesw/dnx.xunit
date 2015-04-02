@@ -11,7 +11,7 @@
         "warningsAsErrors": true
     },
     "frameworks": {
-        "aspnet50": {
+        "dnx451": {
             "frameworkAssemblies": {
                 "System.Collections": "",
                 "System.ObjectModel": "",
@@ -22,7 +22,7 @@
                 "System.Xml.Linq": ""
             }
         },
-        "aspnetcore50": {
+        "dnxcore50": {
             "dependencies": {
                 "System.Collections.Concurrent": "4.0.10-*",
                 "System.Console": "4.0.0-*",
@@ -40,9 +40,9 @@
         }
     },
     "dependencies": {
-        "Microsoft.Framework.Runtime.Interfaces": "1.0.0-beta3",
-        "Microsoft.Framework.TestAdapter": "1.0.0-beta3",
-        "Microsoft.Framework.TestHost": "1.0.0-beta3",
+        "Microsoft.Framework.Runtime.Interfaces": "1.0.0-*",
+        "Microsoft.Framework.TestAdapter": "1.0.0-*",
+        "Microsoft.Framework.TestHost": "1.0.0-*",
         "xunit.runner.utility": "2.1.0-beta1-build2945"
     },
     "commands": {

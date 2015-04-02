@@ -46,7 +46,7 @@ namespace Xunit.Runner.AspNet
                     return 1;
                 }
 
-#if !ASPNETCORE50
+#if !DNXCORE50
                 AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
                 Console.CancelKeyPress += (sender, e) =>
                 {
@@ -65,7 +65,7 @@ namespace Xunit.Runner.AspNet
 
                 var commandLine = CommandLine.Parse(args);
 
-#if !ASPNETCORE50
+#if !DNXCORE50
                 if (commandLine.Debug)
                     Debugger.Launch();
 #else
@@ -112,7 +112,7 @@ namespace Xunit.Runner.AspNet
             }
         }
 
-#if !ASPNETCORE50
+#if !DNXCORE50
         static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = e.ExceptionObject as Exception;
@@ -154,7 +154,7 @@ namespace Xunit.Runner.AspNet
             Console.WriteLine("  -nologo                : do not show the copyright message");
             Console.WriteLine("  -quiet                 : do not show progress messages");
             Console.WriteLine("  -wait                  : wait for input after completion");
-#if !ASPNETCORE50
+#if !DNXCORE50
             Console.WriteLine("  -debug                 : launch the debugger to debug the tests");
 #endif
             Console.WriteLine("  -trait \"name=value\"    : only run tests with matching name/value traits");

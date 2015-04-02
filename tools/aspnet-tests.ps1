@@ -1,9 +1,7 @@
-& tools\kvm use 1.0.0-beta3 -runtime CLR -x86
-push-location test\test.xunit.runner.aspnet
-& k test
-pop-location
+& tools\dnvm install latest -runtime CLR -arch x86
+& dnx test\test.xunit.runner.aspnet test
+if ($LastExitCode -ne 0) { exit 1 }
 
-& tools\kvm use 1.0.0-beta3 -runtime CoreCLR -x86
-push-location test\test.xunit.runner.aspnet
-& k test
-pop-location
+& tools\dnvm install latest -runtime CoreCLR -arch x86
+& dnx test\test.xunit.runner.aspnet test
+if ($LastExitCode -ne 0) { exit 1 }
