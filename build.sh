@@ -30,7 +30,7 @@ echo ""
 echo "Building packages..."
 echo ""
 
-dnu pack src/xunit.runner.aspnet
+dnu pack src/xunit.runner.dnx
 if [ $? -ne 0 ]; then
   echo >&2 "Build packages has failed."
   exit 1
@@ -39,7 +39,7 @@ fi
 echo ""
 echo "Running tests..."
 echo ""
-dnx test/test.xunit.runner.aspnet test -parallel none
+dnx test/test.xunit.runner.dnx test -parallel none
 if [ $? -ne 0 ]; then
   echo >&2 "Running tests has failed."
   exit 1
