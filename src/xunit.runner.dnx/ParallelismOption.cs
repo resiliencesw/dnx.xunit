@@ -1,4 +1,4 @@
-﻿namespace Xunit.Runner.AspNet
+﻿namespace Xunit.Runner.Dnx
 {
     public enum ParallelismOption
     {

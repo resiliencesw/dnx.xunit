@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Xunit.Runner.AspNet
+namespace Xunit.Runner.Dnx
 {
     public class TransformFactory
     {

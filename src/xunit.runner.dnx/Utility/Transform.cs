@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 
-namespace Xunit.Runner.AspNet
+namespace Xunit.Runner.Dnx
 {
     public class Transform
     {

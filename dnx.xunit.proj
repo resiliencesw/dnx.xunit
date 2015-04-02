@@ -29,11 +29,11 @@
   </Target>
 
   <Target Name="Build" DependsOnTargets="PackageRestore">
-    <Exec Command="powershell -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned tools\aspnet-build.ps1" />
+    <Exec Command="powershell -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned tools\dnx-build.ps1" />
   </Target>
   
   <Target Name="Test" DependsOnTargets="Build">
-    <Exec Command="powershell -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned tools\aspnet-tests.ps1" />
+    <Exec Command="powershell -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned tools\dnx-tests.ps1" />
   </Target>
 
   <Target Name="SetVersionNumber">

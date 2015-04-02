@@ -7,11 +7,11 @@ remove-item -recurse -force $(join-path $env:USERPROFILE ".dnx\packages") -Error
 
 # Update build number during CI
 if ($env:BuildSemanticVersion -ne $null) {
-  $content = get-content src\xunit.runner.aspnet\project.json
+  $content = get-content src\xunit.runner.dnx\project.json
   $content = $content.Replace("99.99.99-dev", $env:BuildSemanticVersion)
-  set-content src\xunit.runner.aspnet\project.json $content -encoding UTF8
+  set-content src\xunit.runner.dnx\project.json $content -encoding UTF8
 }
 
 # Restore packages and build
 & dnu restore
-& dnu pack src\xunit.runner.aspnet --configuration Release
+& dnu pack src\xunit.runner.dnx --configuration Release

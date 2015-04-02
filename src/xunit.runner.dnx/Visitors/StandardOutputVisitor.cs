@@ -4,7 +4,7 @@ using System.IO;
 using System.Xml.Linq;
 using Xunit.Abstractions;
 
-namespace Xunit.Runner.AspNet
+namespace Xunit.Runner.Dnx
 {
     public class StandardOutputVisitor : XmlTestExecutionVisitor
     {

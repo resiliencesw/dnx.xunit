@@ -23,9 +23,9 @@
     },
     "dependencies": {
         "xunit": "2.1.0-beta1-build2945",
-        "xunit.runner.aspnet": ""
+        "xunit.runner.dnx": ""
     },
     "commands": {
-        "test": "xunit.runner.aspnet"
+        "test": "xunit.runner.dnx"
     }
 }

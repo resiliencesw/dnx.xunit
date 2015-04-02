@@ -4,7 +4,7 @@ using Microsoft.Framework.TestAdapter;
 using Xunit.Abstractions;
 using VsTestCase = Microsoft.Framework.TestAdapter.Test;
 
-namespace Xunit.Runner.AspNet
+namespace Xunit.Runner.Dnx
 {
     public class DesignTimeExecutionVisitor : TestMessageVisitor<ITestAssemblyFinished>
     {

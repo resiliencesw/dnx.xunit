@@ -1,8 +1,8 @@
 ﻿{
     "authors": ["James Newkirk", "Brad Wilson"],
-    "title": "xUnit.net [Runner: ASP.NET]",
-    "description": "Console and Visual Studio runner for xUnit.net. Supported platforms: ASP.NET 5+",
-    "projectUrl": "https://github.com/xunit/aspnet.xunit",
+    "title": "xUnit.net [Runner: DNX / DNX Core]",
+    "description": "Console and Visual Studio runner for xUnit.net. Supported platforms: DNX 4.5.1+, DNX Core 5+",
+    "projectUrl": "https://github.com/xunit/dnx.xunit",
     "iconUrl": "https://raw.githubusercontent.com/xunit/media/master/logo-512-transparent.png",
     "licenseUrl": "https://raw.githubusercontent.com/xunit/xunit/master/license.txt",
     "requireLicenseAcceptance": false,

@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit.Abstractions;
 
-namespace Xunit.Runner.AspNet
+namespace Xunit.Runner.Dnx
 {
     public class DiagnosticMessageVisitor : TestMessageVisitor
     {

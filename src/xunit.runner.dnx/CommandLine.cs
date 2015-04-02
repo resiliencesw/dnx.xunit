@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Xunit.Runner.AspNet
+namespace Xunit.Runner.Dnx
 {
     public class CommandLine
     {

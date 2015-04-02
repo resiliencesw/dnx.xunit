@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Xunit;
-using Xunit.Runner.AspNet;
+using Xunit.Runner.Dnx;
 using Xunit.Sdk;
 
 public class CommandLineTests
