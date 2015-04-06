@@ -43,7 +43,7 @@
         "Microsoft.Framework.Runtime.Interfaces": "1.0.0-*",
         "Microsoft.Framework.TestAdapter": "1.0.0-*",
         "Microsoft.Framework.TestHost": "1.0.0-*",
-        "xunit.runner.utility": "2.1.0-beta1-build2945"
+        "xunit.runner.utility": "2.1.0-beta2-*"
     },
     "commands": {
         "xunit": "xunit.runner.aspnet"

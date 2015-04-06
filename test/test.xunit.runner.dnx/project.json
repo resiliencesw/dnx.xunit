@@ -22,7 +22,7 @@
         }
     },
     "dependencies": {
-        "xunit": "2.1.0-beta1-build2945",
+        "xunit": "2.1.0-beta2-*",
         "xunit.runner.dnx": ""
     },
     "commands": {
