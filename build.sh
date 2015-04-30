@@ -6,13 +6,13 @@ if ! [ -x "$(command -v mono)" ]; then
 fi
 
 echo ""
-echo "Installing KRE 1.0 beta 3..."
+echo "Installing .NET Execution Environment..."
 echo ""
 
-. tools/kvm.sh
-kvm install 1.0.0-beta3
+. tools/dnvm.sh
+dnvm install 1.0.0-beta4
 if [ $? -ne 0 ]; then
-  echo >&2 "KRE 1.0 beta 3 installation has failed."
+  echo >&2 ".NET Execution Environment installation has failed."
   exit 1
 fi
 
@@ -20,7 +20,8 @@ echo ""
 echo "Restoring packages..."
 echo ""
 
-kpm restore
+dnvm use 1.0.0-beta4
+dnu restore
 if [ $? -ne 0 ]; then
   echo >&2 "Package restore has failed."
   exit 1
@@ -30,10 +31,8 @@ echo ""
 echo "Building packages..."
 echo ""
 
-pushd src/xunit.runner.aspnet
-kpm pack
+dnu pack src/xunit.runner.dnx
 if [ $? -ne 0 ]; then
-  popd
   echo >&2 "Build packages has failed."
   exit 1
 fi
@@ -41,12 +40,8 @@ fi
 echo ""
 echo "Running tests..."
 echo ""
-cd ../../test/test.xunit.runner.aspnet
-k test -parallel none
+dnx test/test.xunit.runner.dnx test -parallel none
 if [ $? -ne 0 ]; then
-  popd
   echo >&2 "Running tests has failed."
   exit 1
 fi
-
-popd

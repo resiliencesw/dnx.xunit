@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <NupkgFiles Include="$(SolutionDir)src\xunit.runner.aspnet\bin\Release\*.nupkg" Exclude="$(SolutionDir)src\xunit.runner.aspnet\bin\Release\*.symbols*.nupkg" />
+    <NupkgFiles Include="$(SolutionDir)src\xunit.runner.dnx\bin\Release\*.nupkg" Exclude="$(SolutionDir)src\xunit.runner.dnx\bin\Release\*.symbols*.nupkg" />
   </ItemGroup>
 
   <Target Name="PushMyGet" DependsOnTargets="_DownloadNuGet" Condition="'$(ForcePushMyGet)' == 'true' Or '$(GitBranch)' == 'master' Or '$(GitBranch)' == 'refs/heads/master'">

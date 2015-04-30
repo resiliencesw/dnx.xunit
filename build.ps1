@@ -36,5 +36,5 @@ if ($maxCpuCount -lt 1) {
     $maxCpuCountText = ":$maxCpuCount"
 }
 
-$allArgs = @("aspnet.xunit.proj", "/m$maxCpuCountText", "/nologo", "/verbosity:$verbosity", "/t:$target", $args)
+$allArgs = @("dnx.xunit.proj", "/m$maxCpuCountText", "/nologo", "/verbosity:$verbosity", "/t:$target", $args)
 & $msbuild $allArgs

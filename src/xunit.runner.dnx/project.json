@@ -1,0 +1,52 @@
+﻿{
+    "authors": ["James Newkirk", "Brad Wilson"],
+    "title": "xUnit.net [Runner: DNX / DNX Core]",
+    "description": "Console and Visual Studio runner for xUnit.net. Supported platforms: DNX 4.5.1+, DNX Core 5+",
+    "projectUrl": "https://github.com/xunit/dnx.xunit",
+    "iconUrl": "https://raw.githubusercontent.com/xunit/media/master/logo-512-transparent.png",
+    "licenseUrl": "https://raw.githubusercontent.com/xunit/xunit/master/license.txt",
+    "requireLicenseAcceptance": false,
+    "version": "99.99.99-dev",
+    "compilationOptions": {
+        "warningsAsErrors": true
+    },
+    "frameworks": {
+        "dnx451": {
+            "frameworkAssemblies": {
+                "System.Collections": "",
+                "System.ObjectModel": "",
+                "System.Reflection": "",
+                "System.Runtime": "",
+                "System.Text.RegularExpressions": "",
+                "System.Xml": "",
+                "System.Xml.Linq": ""
+            }
+        },
+        "dnxcore50": {
+            "dependencies": {
+                "System.Collections.Concurrent": "4.0.10-*",
+                "System.Console": "4.0.0-*",
+                "System.Diagnostics.Tools": "4.0.0-*",
+                "System.IO.FileSystem": "4.0.0-*",
+                "System.Linq": "4.0.0-*",
+                "System.ObjectModel": "4.0.10-*",
+                "System.Reflection": "4.0.10-*",
+                "System.Runtime.Extensions": "4.0.10-*",
+                "System.Security.Cryptography.Hashing": "4.0.0-*",
+                "System.Security.Cryptography.Hashing.Algorithms": "4.0.0-*",
+                "System.Text.RegularExpressions": "4.0.10-*",
+                "System.Threading": "4.0.10-*",
+                "System.Xml.XDocument": "4.0.0-*"
+            }
+        }
+    },
+    "dependencies": {
+        "Microsoft.Framework.Runtime.Interfaces": "1.0.0-beta4",
+        "Microsoft.Framework.TestAdapter": "1.0.0-beta4",
+        "Microsoft.Framework.TestHost": "1.0.0-beta4",
+        "xunit.runner.utility": "2.1.0-*"
+    },
+    "commands": {
+        "xunit": "xunit.runner.dnx"
+    }
+}
