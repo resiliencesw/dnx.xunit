@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.Framework.Runtime;
@@ -195,7 +196,7 @@ namespace Xunit.Runner.Dnx
 
                 if (parallelizeAssemblies.GetValueOrDefault())
                 {
-                    var tasks = project.Assemblies.Select(assembly => Task.Run(() => ExecuteAssembly(consoleLock, defaultDirectory, assembly, quiet, needsXml, teamcity, parallelizeTestCollections, maxThreadCount, project.Filters, designTime, list, designTimeFullyQualifiedNames)));
+                    var tasks = project.Assemblies.Select(assembly => TaskRun(() => ExecuteAssembly(consoleLock, defaultDirectory, assembly, quiet, needsXml, teamcity, parallelizeTestCollections, maxThreadCount, project.Filters, designTime, list, designTimeFullyQualifiedNames)));
                     var results = Task.WhenAll(tasks).GetAwaiter().GetResult();
                     foreach (var assemblyElement in results.Where(result => result != null))
                         assembliesElement.Add(assemblyElement);
@@ -421,6 +422,25 @@ namespace Xunit.Runner.Dnx
             }
 
             return assemblyElement;
+        }
+
+        static Task<T> TaskRun<T>(Func<T> function)
+        {
+            var tcs = new TaskCompletionSource<T>();
+
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    tcs.SetResult(function());
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            });
+
+            return tcs.Task;
         }
     }
 }
