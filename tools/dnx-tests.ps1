@@ -5,9 +5,9 @@ $globalJson = join-path $solutionPath "global.json"
 $dnxVersion = (ConvertFrom-JSON ([System.IO.File]::ReadAllText($globalJson))).sdk.version
 
 & $dnvm use $dnxVersion -runtime CLR -arch x86
-& dnx $(join-path $solutionPath "test\test.xunit.runner.dnx") test
+& dnx $(join-path $solutionPath "test\test.xunit.runner.dnx") test -diagnostics
 if ($LastExitCode -ne 0) { exit 1 }
 
 & $dnvm use $dnxVersion -runtime CoreCLR -arch x86
-& dnx $(join-path $solutionPath "test\test.xunit.runner.dnx") test
+& dnx $(join-path $solutionPath "test\test.xunit.runner.dnx") test -diagnostics
 if ($LastExitCode -ne 0) { exit 1 }
