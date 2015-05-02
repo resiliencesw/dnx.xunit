@@ -18,6 +18,8 @@ namespace Xunit.Runner.Dnx
             Project = Parse();
         }
 
+        public bool DiagnosticMessages { get; set; }
+
         public bool Debug { get; set; }
 
         public bool DesignTime { get; set; }
@@ -117,16 +119,34 @@ namespace Xunit.Runner.Dnx
                     GuardNoOptionValue(option);
                     Wait = true;
                 }
+                else if (optionName == "-diagnostics")
+                {
+                    GuardNoOptionValue(option);
+                    DiagnosticMessages = true;
+                }
                 else if (optionName == "-maxthreads")
                 {
                     if (option.Value == null)
                         throw new ArgumentException("missing argument for -maxthreads");
 
-                    int threadValue;
-                    if (!Int32.TryParse(option.Value, out threadValue) || threadValue < 0)
-                        throw new ArgumentException("incorrect argument value for -maxthreads");
+                    switch (option.Value)
+                    {
+                        case "default":
+                            MaxParallelThreads = null;
+                            break;
 
-                    MaxParallelThreads = threadValue;
+                        case "unlimited":
+                            MaxParallelThreads = 0;
+                            break;
+
+                        default:
+                            int threadValue;
+                            if (!Int32.TryParse(option.Value, out threadValue) || threadValue < 0)
+                                throw new ArgumentException("incorrect argument value for -maxthreads (must be 'default', 'unlimited', or a positive number)");
+
+                            MaxParallelThreads = threadValue;
+                            break;
+                    }
                 }
                 else if (optionName == "-parallel")
                 {

@@ -82,7 +82,7 @@ namespace Xunit.Runner.Dnx
 
                 var failCount = RunProject(defaultDirectory, commandLine.Project, commandLine.Quiet, commandLine.TeamCity,
                                            commandLine.ParallelizeAssemblies, commandLine.ParallelizeTestCollections,
-                                           commandLine.MaxParallelThreads,
+                                           commandLine.MaxParallelThreads, commandLine.DiagnosticMessages,
                                            commandLine.DesignTime, commandLine.List, commandLine.DesignTimeTestUniqueNames);
 
                 if (commandLine.Wait)
@@ -148,13 +148,15 @@ namespace Xunit.Runner.Dnx
             Console.WriteLine("                         :   assemblies - only parallelize assemblies");
             Console.WriteLine("                         :   all - parallelize collections and assemblies");
             Console.WriteLine("  -maxthreads count      : maximum thread count for collection parallelization");
-            Console.WriteLine("                         :   0 - run with unbounded thread count");
-            Console.WriteLine("                         :   >0 - limit task thread pool size to 'count'");
+            Console.WriteLine("                         :   default   - run with default (1 thread per CPU thread)");
+            Console.WriteLine("                         :   unlimited - run with unbounded thread count");
+            Console.WriteLine("                         :   (number)  - limit task thread pool size to 'count'");
             Console.WriteLine("  -noshadow              : do not shadow copy assemblies");
             Console.WriteLine("  -teamcity              : forces TeamCity mode (normally auto-detected)");
             Console.WriteLine("  -nologo                : do not show the copyright message");
             Console.WriteLine("  -quiet                 : do not show progress messages");
             Console.WriteLine("  -wait                  : wait for input after completion");
+            Console.WriteLine("  -diagnostics           : enable diagnostics messages for all test assemblies");
 #if !DNXCORE50
             Console.WriteLine("  -debug                 : launch the debugger to debug the tests");
 #endif
@@ -175,7 +177,17 @@ namespace Xunit.Runner.Dnx
                                   transform.Description);
         }
 
-        int RunProject(string defaultDirectory, XunitProject project, bool quiet, bool teamcity, bool? parallelizeAssemblies, bool? parallelizeTestCollections, int? maxThreadCount, bool designTime, bool list, IReadOnlyList<string> designTimeFullyQualifiedNames)
+        int RunProject(string defaultDirectory,
+                       XunitProject project,
+                       bool quiet,
+                       bool teamcity,
+                       bool? parallelizeAssemblies,
+                       bool? parallelizeTestCollections,
+                       int? maxThreadCount,
+                       bool diagnosticMessages,
+                       bool designTime,
+                       bool list,
+                       IReadOnlyList<string> designTimeFullyQualifiedNames)
         {
             XElement assembliesElement = null;
             var xmlTransformers = TransformFactory.GetXmlTransformers(project);
@@ -196,7 +208,7 @@ namespace Xunit.Runner.Dnx
 
                 if (parallelizeAssemblies.GetValueOrDefault())
                 {
-                    var tasks = project.Assemblies.Select(assembly => TaskRun(() => ExecuteAssembly(consoleLock, defaultDirectory, assembly, quiet, needsXml, teamcity, parallelizeTestCollections, maxThreadCount, project.Filters, designTime, list, designTimeFullyQualifiedNames)));
+                    var tasks = project.Assemblies.Select(assembly => TaskRun(() => ExecuteAssembly(consoleLock, defaultDirectory, assembly, quiet, needsXml, teamcity, parallelizeTestCollections, maxThreadCount, diagnosticMessages, project.Filters, designTime, list, designTimeFullyQualifiedNames)));
                     var results = Task.WhenAll(tasks).GetAwaiter().GetResult();
                     foreach (var assemblyElement in results.Where(result => result != null))
                         assembliesElement.Add(assemblyElement);
@@ -205,7 +217,7 @@ namespace Xunit.Runner.Dnx
                 {
                     foreach (var assembly in project.Assemblies)
                     {
-                        var assemblyElement = ExecuteAssembly(consoleLock, defaultDirectory, assembly, quiet, needsXml, teamcity, parallelizeTestCollections, maxThreadCount, project.Filters, designTime, list, designTimeFullyQualifiedNames);
+                        var assemblyElement = ExecuteAssembly(consoleLock, defaultDirectory, assembly, quiet, needsXml, teamcity, parallelizeTestCollections, maxThreadCount, diagnosticMessages, project.Filters, designTime, list, designTimeFullyQualifiedNames);
                         if (assemblyElement != null)
                             assembliesElement.Add(assemblyElement);
                     }
@@ -298,6 +310,7 @@ namespace Xunit.Runner.Dnx
                                  bool teamCity,
                                  bool? parallelizeTestCollections,
                                  int? maxThreadCount,
+                                 bool diagnosticMessages,
                                  XunitFilters filters,
                                  bool designTime,
                                  bool listTestCases,
@@ -310,6 +323,9 @@ namespace Xunit.Runner.Dnx
 
             try
             {
+                if (diagnosticMessages)
+                    assembly.Configuration.DiagnosticMessages = true;
+
                 var discoveryOptions = TestFrameworkOptions.ForDiscovery(assembly.Configuration);
                 var executionOptions = TestFrameworkOptions.ForExecution(assembly.Configuration);
                 if (maxThreadCount.HasValue)
