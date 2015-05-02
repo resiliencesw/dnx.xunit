@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8B1FE5A0-E
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "xunit.runner.dnx", "src\xunit.runner.dnx\xunit.runner.dnx.xproj", "{002D321E-170E-4E55-BDD1-77C6353A6EB5}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "test.xunit.runner.dnx", "test\test.xunit.runner.dnx\test.xunit.runner.dnx.kproj", "{838070AB-04F2-4A37-9C86-91669E633F70}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "test.xunit.runner.dnx", "test\test.xunit.runner.dnx\test.xunit.runner.dnx.xproj", "{838070AB-04F2-4A37-9C86-91669E633F70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
