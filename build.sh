@@ -10,7 +10,7 @@ echo "Installing .NET Execution Environment..."
 echo ""
 
 . tools/dnvm.sh
-dnvm install 1.0.0-beta4
+dnvm install 1.0.0-beta5-11682 -u
 if [ $? -ne 0 ]; then
   echo >&2 ".NET Execution Environment installation has failed."
   exit 1
@@ -20,7 +20,7 @@ echo ""
 echo "Restoring packages..."
 echo ""
 
-dnvm use 1.0.0-beta4
+dnvm use 1.0.0-beta5-11682
 dnu restore
 if [ $? -ne 0 ]; then
   echo >&2 "Package restore has failed."
