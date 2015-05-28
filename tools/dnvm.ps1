@@ -67,7 +67,7 @@ function _WriteOut {
 
 ### Constants
 $ProductVersion="1.0.0"
-$BuildVersion="beta5-10374"
+$BuildVersion="beta6-10380"
 $Authors="Microsoft Open Technologies, Inc."
 
 # If the Version hasn't been replaced...
@@ -85,8 +85,8 @@ Set-Variable -Option Constant "DefaultUserDirectoryName" ".dnx"
 Set-Variable -Option Constant "OldUserDirectoryNames" @(".kre", ".k")
 Set-Variable -Option Constant "RuntimePackageName" "dnx"
 Set-Variable -Option Constant "DefaultFeed" "https://www.nuget.org/api/v2"
-Set-Variable -Option Constant "DefaultUnstableFeed" "https://www.myget.org/F/aspnetrelease/api/v2"
-Set-Variable -Option Constant "CrossGenCommand" "k-crossgen"
+Set-Variable -Option Constant "DefaultUnstableFeed" "https://www.myget.org/F/aspnetvnext/api/v2"
+Set-Variable -Option Constant "CrossGenCommand" "dnx-crossgen"
 Set-Variable -Option Constant "CommandPrefix" "dnvm-"
 Set-Variable -Option Constant "DefaultArchitecture" "x86"
 Set-Variable -Option Constant "DefaultRuntime" "clr"
@@ -1148,12 +1148,15 @@ function dnvm-install {
         Write-Progress -Activity "Installing runtime" "Unpacking runtime" -Id 1
         Unpack-Package $DownloadFile $UnpackFolder
 
-        New-Item -Type Directory $RuntimeFolder -Force | Out-Null
-        _WriteOut "Installing to $RuntimeFolder"
-        _WriteDebug "Moving package contents to $RuntimeFolder"
-        Move-Item "$UnpackFolder\*" $RuntimeFolder
-        _WriteDebug "Cleaning temporary directory $UnpackFolder"
-        Remove-Item $UnpackFolder -Force | Out-Null
+        if(Test-Path $RuntimeFolder) {
+            # Ensure the runtime hasn't been installed in the time it took to download the package.
+            _WriteOut "'$runtimeFullName' is already installed."
+        }
+        else {
+            _WriteOut "Installing to $RuntimeFolder"
+            _WriteDebug "Moving package contents to $RuntimeFolder"
+            Move-Item $UnpackFolder $RuntimeFolder
+        }
 
         dnvm-use $PackageVersion -Architecture:$Architecture -Runtime:$Runtime -Persistent:$Persistent
 
