@@ -49,7 +49,7 @@ namespace Xunit.Runner.Dnx
 
                 _shutdown.ShutdownRequested.Register(() =>
                 {
-                    Console.WriteLine("Execution was cancelled, existing.");
+                    Console.WriteLine("Execution was cancelled, exiting.");
 #if !DNXCORE50
                     Environment.Exit(1);
 #else
