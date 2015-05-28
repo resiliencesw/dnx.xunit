@@ -24,11 +24,13 @@ namespace Xunit.Runner.Dnx
 
         private readonly IApplicationEnvironment _appEnv;
         private readonly IServiceProvider _services;
+        private readonly IApplicationShutdown _shutdown;
 
-        public Program(IApplicationEnvironment appEnv, IServiceProvider services)
+        public Program(IApplicationEnvironment appEnv, IServiceProvider services, IApplicationShutdown shutdown)
         {
             _appEnv = appEnv;
             _services = services;
+            _shutdown = shutdown;
         }
 
         [STAThread]
@@ -44,6 +46,16 @@ namespace Xunit.Runner.Dnx
                     PrintUsage();
                     return 1;
                 }
+
+                _shutdown.ShutdownRequested.Register(() =>
+                {
+                    Console.WriteLine("Execution was cancelled, existing.");
+#if !DNXCORE50
+                    Environment.Exit(1);
+#else
+                    Environment.FailFast(null);
+#endif
+                });
 
 #if !DNXCORE50
                 AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
